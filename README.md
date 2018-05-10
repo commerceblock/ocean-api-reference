@@ -251,10 +251,9 @@ Result:
 f4f30db53238a7529bc51fcda04ea22bd8f8b188622a6488da12281874b71f72
 ```
 
-
 [dumpderivedkeys]: #dumpderivedkeys
-[validatederivedkeys]:# validatederivedkeys
-[getderivedkeys]:# getderivedkeys
-[getcontract]:# getcontract
-[getcontracthash]:# getcontracthash
+[validatederivedkeys]: # validatederivedkeys
+[getderivedkeys]: # getderivedkeys
+[getcontract]: # getcontract
+[getcontracthash]: # getcontracthash
 
