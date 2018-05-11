@@ -85,7 +85,7 @@ along with the corresponding non-tweaked basis public keys to a specified file.
   <td>Required<br />(exactly 1)</td>
   <td markdown="block">
   
-  The name of the output file for the list of tweaked addressed and base public keys
+  The name of the output file for the list of tweaked addresses and base public keys
   
   </td>
   </tr>
@@ -227,8 +227,6 @@ contract.
    <td>Required<br />(exactly 1)</td>
    <td>A JSON object containing the plain text of the contract</td>
   </tr>
-
-  <tr>
  </tbody>
 </table>
 
@@ -486,16 +484,16 @@ ocean-cli dumpwhitelist dumpfile.txt
 
 
 [dumpderivedkeys]: #dumpderivedkeys
-[validatederivedkeys]:# validatederivedkeys
-[getderivedkeys]:# getderivedkeys
-[getcontract]:# getcontract
-[getcontracthash]:# getcontracthash
-[addtowhitelist]:# addtowhitelist
-[readwhitelist]:# readwhitelist
-[removefromwhitelist]:# removefromwhitelist
-[clearwhitelist]:# clearwhitelist
-[dumpwhitelist]:# dumpwhitelist
-[pkhwhitelist]:# pkhwhitelist
-[disablect]:# disablect
-[embedcontract]:# embedcontract
+[validatederivedkeys]: #validatederivedkeys
+[getderivedkeys]: #getderivedkeys
+[getcontract]: #getcontract
+[getcontracthash]: #getcontracthash
+[addtowhitelist]: #addtowhitelist
+[readwhitelist]: #readwhitelist
+[removefromwhitelist]: #removefromwhitelist
+[clearwhitelist]: #clearwhitelist
+[dumpwhitelist]: #dumpwhitelist
+[pkhwhitelist]: #pkhwhitelist
+[disablect]: #disablect
+[embedcontract]: #embedcontract
 
