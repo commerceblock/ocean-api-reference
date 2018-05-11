@@ -51,6 +51,7 @@ The following RPCs are unique to the Ocean client
 ### Policy
 - [addtowhitelist][]
 - [readwhitelist][]
+- [querywhitelist][]
 - [removefromwhitelist][]
 - [clearwhitelist][]
 - [dumpwhitelist][]
@@ -361,6 +362,64 @@ contract hash as present in the most recent block header.
 ```bash
 ocean-cli addtowhitelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz 028f9c608ded55e89aef8ade69b90612510dbd333c8d63cbe1072de9049731bb58
 ```
+## querywhitelist
+
+The `querywhitelist` RPC queries if a specified address is present in the node mempool whitelist. 
+
+*Parameter #1---the Base58check encoded address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---TRUE of FALSE*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>output</td>
+   <td>boolian</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>1 is the address is present, 0 otherwise</td>
+  </tr>
+
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli querywhitelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+
+Result:
+
+```text
+1
+```
 
 ## readwhitelist
 
@@ -490,6 +549,7 @@ ocean-cli dumpwhitelist dumpfile.txt
 [getcontracthash]: #getcontracthash
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
+[querywhitelist]: #querywhitelist
 [removefromwhitelist]: #removefromwhitelist
 [clearwhitelist]: #clearwhitelist
 [dumpwhitelist]: #dumpwhitelist
