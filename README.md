@@ -25,7 +25,7 @@
 The Ocean client includes all of the Remote Procedure Calls (RPCs) of 
 the Elements platform (described in the reference 
 [here](https://github.com/ElementsProject/elementsbp-api-reference/blob/master/api.md)) 
-as well as additional RPCs that control advanced and extended unique to the Ocean client. 
+as well as additional RPCs that control advanced and extended features unique to the Ocean client. 
 This document describes these new RPCs and their function as well as additional 
 Ocean client configuration options that enable them. 
 
@@ -47,7 +47,6 @@ The following RPCs are unique to the Ocean client
 - [getderivedkeys][]
 - [getcontract][]
 - [getcontracthash][]
-- [setcontract][]
 
 ### Policy
 - [addtowhitelist][]
@@ -55,14 +54,11 @@ The following RPCs are unique to the Ocean client
 - [removefromwhitelist][]
 - [clearwhitelist][]
 - [dumpwhitelist][]
-- [setcontracthash][]
 
 Configuration options
 
 - [pkhwhitelist][]
 - [disablect][]
-- [bitcoinattest][]
-- [bitcoinconfirmation][]
 - [embedcontract][]
 
 ## dumpderivedkeys
@@ -138,6 +134,74 @@ tweaked with the current contract hash.
 ocean-cli validatederivedkeys
 ```
 
+## getderivedkeys
+
+The `getderivedkeys` RPC returns a list of contract tweaked
+addresses in the key pool
+along with the corresponding non-tweaked basis public keys as a JSON object.
+
+*Parameters: none*
+
+*Result---the txid and vout of the reissuance output*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>result
+   </td>
+   <td>object</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>An object containing a list of contract tweaked addresses and 
+basis public keys</td>
+  </tr>
+  <tr>
+   <td markdown="block">
+
+   →<br>`address`
+
+   </td>
+
+   <td>string (hex)</td>
+   <td>Required<br />(key pool size)</td>
+   <td>Base58check encoded address corresponding to the contract tweaked public key</td>
+  </tr>
+  <tr>
+   <td markdown="block">
+
+   →<br>`bpubkey`
+
+   </td>
+
+   <td>string (hex)</td>
+   <td>Required<br />(key pool size)</td>
+   <td>Hex encoding of the compressed untweaked public key</td>
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli getderivedkeys
+```
+
+Result:
+
+```json
+{
+  "address": ["2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz","2daBDLApGapXjW4xErMsYDAHWd2QzFHHxvB"],
+  "bpubkey": ["028f9c608ded55e89aef8ade69b90612510dbd333c8d63cbe1072de9049731bb58","0263a73eca5334af77037a1c8844b5220017bf6fb627c5a57c862dff20ea001d99"]
+}
+```
+
 ## getcontract
 
 The `getcontract` RPC returns the plain text of the currently enforced 
@@ -158,11 +222,7 @@ contract.
  </thead>
  <tbody>
   <tr>
-   <td markdown="contract">
-   
-   `contract`
-   
-   </td>
+   <td>contract</td>
    <td>object</td>
    <td>Required<br />(exactly 1)</td>
    <td>A JSON object containing the plain text of the contract</td>
@@ -225,17 +285,12 @@ If the block height is not supplied, the current contract hash is returned.
  </thead>
  <tbody>
   <tr>
-   <td markdown="contracthash">
-
-   `contracthash`
-
-   </td>
+   <td>contracthash</td>
    <td>string</td>
    <td>Required<br />(exactly 1)</td>
    <td>The hex-encoded hash of the contract hash</td>
   </tr>
 
-  <tr>
  </tbody>
 </table>
 
@@ -251,9 +306,196 @@ Result:
 f4f30db53238a7529bc51fcda04ea22bd8f8b188622a6488da12281874b71f72
 ```
 
+## addtowhitelist
+
+The `addtowhitelist` RPC adds a valid contract tweaked address to the node 
+mempool whitelist. It requires both an address and corresponding base public
+key, and the RPC cheacks that the address is valid and has been tweaked 
+from the supplied base public key with the current 
+contract hash as present in the most recent block header. 
+
+*Parameter #1---the Base58check contract tweaked address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded contract tweaked address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #2---the base (un-tweaked) compressed public key*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>bpubkey</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Hex encoded base public key</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inoputs*
+
+*Example*
+
+```bash
+ocean-cli addtowhitelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz 028f9c608ded55e89aef8ade69b90612510dbd333c8d63cbe1072de9049731bb58
+```
+
+## readwhitelist
+
+The `readwhitelist` RPC adds a list of valid contract tweaked address to the node
+mempool whitelist. It requires a file that contains a list of both an address and corresponding base public
+key, and the RPC cheacks that each address is valid and has been tweaked
+from the supplied base public key with the current
+contract hash as present in the most recent block header. The file format is as decribed in [dumpderivedkeys][]. 
+
+*Parameter #1---the filename to read in the list*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>filename</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Name of file containing the list of contract tweaked address and base public keys</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inoputs*
+
+*Example*
+
+```bash
+ocean-cli readwhitelist derivedkeys.txt
+```
+
+## removefromwhitelist
+
+The `removefromwhitelist` RPC removes a specified address from the node mempool whitelist. 
+
+*Parameter #1---the Base58check encoded address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inoputs*
+
+*Example*
+
+```bash
+ocean-cli removefromwhitelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+
+## clearwhitelist
+
+The `clearwhitelist` RPC clears the mempool whitelist of all addresses.
+
+*Parameters: none*
+
+*Result: nome*
+
+*Example*
+
+```bash
+ocean-cli clearwhitelist
+```
+
+## dumpwhitelist
+
+The `dumpwhitelist` RPC outputs a list of all
+addresses in the node mempool whitelist to a specified file.
+
+*Parameter #1---the filename of the output file*
+
+<table>
+<thead>
+ <tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Presence</th>
+  <th>Description</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td>filename</td>
+  <td>string</td>
+  <td>Required<br />(exactly 1)</td>
+  <td markdown="block">
+
+  The name of the output file for the list of whitelist addresses
+
+  </td>
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli dumpwhitelist dumpfile.txt
+```
+
+
 [dumpderivedkeys]: #dumpderivedkeys
-[validatederivedkeys]: #validatederivedkeys
-[getderivedkeys]: #getderivedkeys
-[getcontract]: #getcontract
-[getcontracthash]: #getcontracthash
+[validatederivedkeys]:# validatederivedkeys
+[getderivedkeys]:# getderivedkeys
+[getcontract]:# getcontract
+[getcontracthash]:# getcontracthash
+[addtowhitelist]:# addtowhitelist
+[readwhitelist]:# readwhitelist
+[removefromwhitelist]:# removefromwhitelist
+[clearwhitelist]:# clearwhitelist
+[dumpwhitelist]:# dumpwhitelist
+[pkhwhitelist]:# pkhwhitelist
+[disablect]:# disablect
+[embedcontract]:# embedcontract
 
