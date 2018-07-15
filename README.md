@@ -56,9 +56,10 @@ The following RPCs are unique to the Ocean client
 - [clearwhitelist][]
 - [dumpwhitelist][]
 
-Configuration options
+### Configuration options
 
 - [pkhwhitelist][]
+- [issuanceblock][]
 - [disablect][]
 - [embedcontract][]
 - [attestationhash][]
@@ -555,6 +556,7 @@ ocean-cli dumpwhitelist dumpfile.txt
 [clearwhitelist]: #clearwhitelist
 [dumpwhitelist]: #dumpwhitelist
 [pkhwhitelist]: #pkhwhitelist
+[issuanceblock]: #issuanceblock
 [disablect]: #disablect
 [embedcontract]: #embedcontract
 [attestationhash]: #attestationhash
