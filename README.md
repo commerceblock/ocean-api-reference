@@ -47,6 +47,7 @@ The following RPCs are unique to the Ocean client
 - [getderivedkeys][]
 - [getcontract][]
 - [getcontracthash][]
+- [getmappinghash][]
 
 ### Policy
 - [addtowhitelist][]
@@ -63,6 +64,9 @@ The following RPCs are unique to the Ocean client
 - [disablect][]
 - [embedcontract][]
 - [attestationhash][]
+- [embedmapping][]
+- [issuecontrolscript][]
+- [initialfreecoinsdestination][]
 
 ## dumpderivedkeys
 
@@ -268,7 +272,7 @@ If the block height is not supplied, the current contract hash is returned.
    <td>block height</td>
    <td>number (int)</td>
    <td>Optional<br />(0 or 1)</td>
-   <td>Block height to retreive the contract hash from (Default: most recent block)</td>
+   <td>Block height to retrieve the contract hash from (Default: most recent block)</td>
   </tr>
  </tbody>
 </table>
@@ -299,6 +303,66 @@ If the block height is not supplied, the current contract hash is returned.
 
 ```bash
 ocean-cli getcontracthash
+```
+
+Result:
+
+```text
+f4f30db53238a7529bc51fcda04ea22bd8f8b188622a6488da12281874b71f72
+```
+
+## getmappinghash
+
+The `getmappinghash` RPC returns the hash of the mapping object in force at a given block height.
+If the block height is not supplied, the current mapping hash is returned.
+
+*Parameter #1---the blockheight at which a mapping was in force*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>block height</td>
+   <td>number (int)</td>
+   <td>Optional<br />(0 or 1)</td>
+   <td>Block height to retrieve the mapping hash from (Default: most recent block)</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---the mapping hash*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>mappinghash</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>The hex-encoded hash of the mapping hash</td>
+  </tr>
+
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli getmappinghash
 ```
 
 Result:
@@ -549,6 +613,7 @@ ocean-cli dumpwhitelist dumpfile.txt
 [getderivedkeys]: #getderivedkeys
 [getcontract]: #getcontract
 [getcontracthash]: #getcontracthash
+[getmappinghash]: #getmappinghash
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
 [querywhitelist]: #querywhitelist
@@ -560,4 +625,6 @@ ocean-cli dumpwhitelist dumpfile.txt
 [disablect]: #disablect
 [embedcontract]: #embedcontract
 [attestationhash]: #attestationhash
-
+[embedmapping]: #embedmapping
+[issuecontrolscript]: #issuecontrolscript
+[initialfreecoinsdestination]: #initialfreecoinsdestination
