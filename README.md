@@ -56,10 +56,20 @@ The following RPCs are unique to the Ocean client
 - [removefromwhitelist][]
 - [clearwhitelist][]
 - [dumpwhitelist][]
+- [addtofreezelist][]
+- [queryfreezelist][]
+- [removefromfreezelist][]
+- [clearfreezelist][]
+- [addtoburnlist][]
+- [queryburnlist][]
+- [removefromburnlist][]
+- [clearburnlist][]
 
 ### Configuration options
 
 - [pkhwhitelist][]
+- [freezelist][]
+- [burnlist][]
 - [issuanceblock][]
 - [disablect][]
 - [embedcontract][]
@@ -607,6 +617,289 @@ addresses in the node mempool whitelist to a specified file.
 ocean-cli dumpwhitelist dumpfile.txt
 ```
 
+## addtofreezelist
+
+The `addtofreezelist` RPC adds an address to the node
+mempool freezelist. Transactions spending from UTXOs with 
+output addresses on the freezelist are blocked from entering the 
+mempool if the '-freezelist' configuration option is enabled. 
+
+*Parameter #1---the Base58check address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inputs*
+
+*Example*
+
+```bash
+ocean-cli addtofreezelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+## queryfreezelist
+
+The `queryfreezelist` RPC queries if a specified address is present in the node mempool freezelist.
+
+*Parameter #1---the Base58check encoded address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---TRUE of FALSE*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>output</td>
+   <td>boolian</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>1 is the address is present, 0 otherwise</td>
+  </tr>
+
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli queryfreezelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+
+Result:
+
+```text
+1
+```
+
+## removefromfreezelist
+
+The `removefromfreezelist` RPC removes a specified address from the node mempool freezelist.
+
+*Parameter #1---the Base58check encoded address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inoputs*
+
+*Example*
+
+```bash
+ocean-cli removefromfreezelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+
+## clearfreezelist
+
+The `clearfreezelist` RPC clears the mempool whitelist of all addresses.
+
+*Parameters: none*
+
+*Result: nome*
+
+*Example*
+
+```bash
+ocean-cli clearfreezelist
+```
+
+## addtofreezelist
+
+The `addtoburnlist` RPC adds an address to the node
+mempool burnlist. Transactions spending from UTXOs with 
+output addresses on the freezelist are alowed into the 
+mempool if these addresses are also on the burnlist and have 
+only TX_FEE and TX_NULL_DATA outputs (with both the `-freezelist` 
+and `-burnlist` configurations options enabled). 
+
+*Parameter #1---the Base58check address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inputs*
+
+*Example*
+
+```bash
+ocean-cli addtoburnlist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+## queryburnlist
+
+The `queryburnlist` RPC queries if a specified address is present in the node mempool burnlist.
+
+*Parameter #1---the Base58check encoded address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---TRUE of FALSE*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>output</td>
+   <td>boolian</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>1 is the address is present, 0 otherwise</td>
+  </tr>
+
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli queryburnlist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+
+Result:
+
+```text
+1
+```
+
+## removefromburnlist
+
+The `removefromburnlist` RPC removes a specified address from the node mempool burnlist.
+
+*Parameter #1---the Base58check encoded address*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>address</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check encoded address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---none if valid, errors returned if invalid inoputs*
+
+*Example*
+
+```bash
+ocean-cli removefromburnlist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz
+```
+
+## clearburnlist
+
+The `clearburnlist` RPC clears the mempool whitelist of all addresses.
+
+*Parameters: none*
+
+*Result: nome*
+
+*Example*
+
+```bash
+ocean-cli clearburnlist
+```
 
 [dumpderivedkeys]: #dumpderivedkeys
 [validatederivedkeys]: #validatederivedkeys
@@ -620,6 +913,14 @@ ocean-cli dumpwhitelist dumpfile.txt
 [removefromwhitelist]: #removefromwhitelist
 [clearwhitelist]: #clearwhitelist
 [dumpwhitelist]: #dumpwhitelist
+[addtofreezelist]: #addtofreezelist
+[queryfreezelist]: #queryfreezelist
+[removefromfreezelist]: #removefromfreezelist
+[clearfreezelist]: #clearfreezelist
+[addtoburnlist]: #addtoburnlist
+[queryburnlist]: #queryburnlist
+[removefromburnlist]: #removefromburnlist
+[clearburnlist]: #clearburnlist
 [pkhwhitelist]: #pkhwhitelist
 [issuanceblock]: #issuanceblock
 [disablect]: #disablect
