@@ -48,6 +48,7 @@ The following RPCs are unique to the Ocean client
 - [getcontract][]
 - [getcontracthash][]
 - [getmappinghash][]
+- [createrawissuance][]
 
 ### Policy
 - [addtowhitelist][]
@@ -381,6 +382,214 @@ Result:
 f4f30db53238a7529bc51fcda04ea22bd8f8b188622a6488da12281874b71f72
 ```
 
+## createrawissuance
+
+The `createrawissuance` RPC creates a raw unsigned issuance transaction with specified 
+outputs and spending from a specified input containing an amount of policy asset. 
+
+*Parameter #1---the Base58check address for the issued asset*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>assetaddress</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check issued asset address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #2---the amount of issued asset*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>assetamount</td>
+   <td>amount</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Amount of asset to issue</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #3---the Base58check address for the reissuance token*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>tokenaddress</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check reissuance token address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #4---the amount of reissuance token*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>tokenamount</td>
+   <td>amount</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Amount of reissuance token</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #5---the Base58check address for the policyAsset change*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>changeaddress</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Base58check change address</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #6---the amount of policyAsset change*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>changeamount</td>
+   <td>amount</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Amount of policyAsset to return</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #7---the fee amount*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>feeamount</td>
+   <td>amount</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Transaction fee amount (the input amount minus the change amount)</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #8---input TXID*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>inputtxid</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Hex of the input TXID containing the policyAsset</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #9---input transaction vout*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>vout</td>
+   <td>integer</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Input transaction vout</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---the unsigned raw transaction in hex*
+
+*Example*
+
+```bash
+ocean-cli createrawissuance 2deJ6F3w6HUtXM8JjY5YPc8wtaXerqFX7HA 123.0 2ddSmTujABoCzDyU9hPghcp4ojAGmJRtnWk 1.23 XKSxznoA799169xt3zCm7a4qkdT1KZANv3 332.9995 0.0005 40ac4e02a64ea14190e96d6e1c5c877b12522db3fb5adffd58b1aed0cc11150a 0
+```
+
+Result:
+
+```text
+0200000000010a1511ccd0aeb158fddf5afbb32d52127b875c1c6e6de99041a14ea6024eac400000008000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002dd231b0001000000000754d4c0040174820afc79a50ed4b9de7bfbc286adead7d46300787e3d986dd8bff570902d620100000002dd231b00001976a9143565dfe051b252c6c5d51275fa91850ef0bb26b288ac017c2096b20b81bd5734cb631335fa1a5bfed9c5a10e2ba4ce86df1b28fb2d50e401000000000754d4c0001976a9142c11d12a57cdd294b3ffa89cf2503a612252fbf288ac01230f4f5d4b7c6fa845806ee4f67713459e1b69e8e60fcee2e4940c7a0d5de1b20100000007c0d4e9b00017a91458d6453537165062f887d004b979b054c5fa98c28701230f4f5d4b7c6fa845806ee4f67713459e1b69e8e60fcee2e4940c7a0d5de1b201000000000000c350000000000000
+```
+
 ## addtowhitelist
 
 The `addtowhitelist` RPC adds a valid contract tweaked address to the node
@@ -438,6 +647,7 @@ contract hash as present in the most recent block header.
 ```bash
 ocean-cli addtowhitelist 2dZhhVmJkXCaWUzPmhmwQ3gBJm2NJSnrvyz 028f9c608ded55e89aef8ade69b90612510dbd333c8d63cbe1072de9049731bb58
 ```
+
 ## querywhitelist
 
 The `querywhitelist` RPC queries if a specified address is present in the node mempool whitelist.
@@ -907,6 +1117,7 @@ ocean-cli clearburnlist
 [getcontract]: #getcontract
 [getcontracthash]: #getcontracthash
 [getmappinghash]: #getmappinghash
+[createrawissuance]: #createrawissuance
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
 [querywhitelist]: #querywhitelist
@@ -922,6 +1133,8 @@ ocean-cli clearburnlist
 [removefromburnlist]: #removefromburnlist
 [clearburnlist]: #clearburnlist
 [pkhwhitelist]: #pkhwhitelist
+[freezelist]: #freezelist
+[burnlist]: #burnlist
 [issuanceblock]: #issuanceblock
 [disablect]: #disablect
 [embedcontract]: #embedcontract
