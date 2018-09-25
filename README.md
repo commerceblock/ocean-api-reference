@@ -384,7 +384,7 @@ f4f30db53238a7529bc51fcda04ea22bd8f8b188622a6488da12281874b71f72
 
 ## createrawissuance
 
-The `createrawissuance` RPC creates a raw unsigned issuance transaction with specified 
+The `createrawissuance` RPC creates an unblinded raw unsigned issuance transaction with specified 
 outputs and spending from a specified input containing an amount of policy asset. 
 
 *Parameter #1---the Base58check address for the issued asset*
@@ -508,12 +508,33 @@ outputs and spending from a specified input containing an amount of policy asset
    <td>changeamount</td>
    <td>amount</td>
    <td>Required<br />(exactly 1)</td>
-   <td>Amount of policyAsset to return</td>
+   <td>Amount of policyAsset to return per output</td>
   </tr>
  </tbody>
 </table>
 
-*Parameter #7---the fee amount*
+*Parameter #7---the number of policyAsset outputs*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>numchange</td>
+   <td>integer</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Numebr of policyAsset outputs</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #8---the fee amount*
 
 <table>
  <thead>
@@ -534,7 +555,7 @@ outputs and spending from a specified input containing an amount of policy asset
  </tbody>
 </table>
 
-*Parameter #8---input TXID*
+*Parameter #9---input TXID*
 
 <table>
  <thead>
@@ -555,7 +576,7 @@ outputs and spending from a specified input containing an amount of policy asset
  </tbody>
 </table>
 
-*Parameter #9---input transaction vout*
+*Parameter #10---input transaction vout*
 
 <table>
  <thead>
@@ -581,7 +602,7 @@ outputs and spending from a specified input containing an amount of policy asset
 *Example*
 
 ```bash
-ocean-cli createrawissuance 2deJ6F3w6HUtXM8JjY5YPc8wtaXerqFX7HA 123.0 2ddSmTujABoCzDyU9hPghcp4ojAGmJRtnWk 1.23 XKSxznoA799169xt3zCm7a4qkdT1KZANv3 332.9995 0.0005 40ac4e02a64ea14190e96d6e1c5c877b12522db3fb5adffd58b1aed0cc11150a 0
+ocean-cli createrawissuance 2deJ6F3w6HUtXM8JjY5YPc8wtaXerqFX7HA 123.0 2ddSmTujABoCzDyU9hPghcp4ojAGmJRtnWk 1.23 XKSxznoA799169xt3zCm7a4qkdT1KZANv3 332.9995 1 0.0005 40ac4e02a64ea14190e96d6e1c5c877b12522db3fb5adffd58b1aed0cc11150a 0
 ```
 
 Result:
