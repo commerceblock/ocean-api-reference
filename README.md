@@ -48,6 +48,9 @@ The following RPCs are unique to the Ocean client
 - [getcontract][]
 - [getcontracthash][]
 - [getmappinghash][]
+
+### Utility
+- [getutxoassetinfo][]
 - [createrawissuance][]
 
 ### Policy
@@ -611,6 +614,62 @@ Result:
 0200000000010a1511ccd0aeb158fddf5afbb32d52127b875c1c6e6de99041a14ea6024eac400000008000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002dd231b0001000000000754d4c0040174820afc79a50ed4b9de7bfbc286adead7d46300787e3d986dd8bff570902d620100000002dd231b00001976a9143565dfe051b252c6c5d51275fa91850ef0bb26b288ac017c2096b20b81bd5734cb631335fa1a5bfed9c5a10e2ba4ce86df1b28fb2d50e401000000000754d4c0001976a9142c11d12a57cdd294b3ffa89cf2503a612252fbf288ac01230f4f5d4b7c6fa845806ee4f67713459e1b69e8e60fcee2e4940c7a0d5de1b20100000007c0d4e9b00017a91458d6453537165062f887d004b979b054c5fa98c28701230f4f5d4b7c6fa845806ee4f67713459e1b69e8e60fcee2e4940c7a0d5de1b201000000000000c350000000000000
 ```
 
+## getutxoassetinfo
+
+The `getutxoassetinfo` RPC returns a summary of the total amounts of unspent (and un-burnt) 
+assets in the UTXO set. Ammounts in transactions marked as frozen (i.e. with one output 
+having a zero address) are listed in a separate field. 
+
+*Parameters: none*
+
+*Result---an array of JSON objects containing the unspent amounts for each issued asset*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>contract</td>
+   <td>object</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>An array of JSON objects of unspent amounts for each issued asset</td>
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli getcontract
+```
+
+Result:
+
+```json
+[
+  {
+    "asset": "7f7c00ca515e46165ea6a13dd49d22759beeb26a952128f1a5af824d208a051e",
+    "spendabletxouts": 1,
+    "amountspendable": 3.00000000,
+    "frozentxouts": 0,
+    "amountfrozen": 0.00000000
+  }, 
+  {
+    "asset": "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23",
+    "spendabletxouts": 107,
+    "amountspendable": 500000.00000000,
+    "frozentxouts": 0,
+    "amountfrozen": 0.00000000
+  }
+]
+```
+
 ## addtowhitelist
 
 The `addtowhitelist` RPC adds a valid contract tweaked address to the node
@@ -1139,6 +1198,7 @@ ocean-cli clearburnlist
 [getcontracthash]: #getcontracthash
 [getmappinghash]: #getmappinghash
 [createrawissuance]: #createrawissuance
+[getutxoassetinfo]: #getutxoassetinfo
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
 [querywhitelist]: #querywhitelist
