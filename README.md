@@ -646,7 +646,7 @@ having a zero address) are listed in a separate field.
 *Example*
 
 ```bash
-ocean-cli getcontract
+ocean-cli getutxoassetinfo
 ```
 
 Result:
