@@ -58,7 +58,7 @@ The following RPCs are unique to the Ocean client
 ### Policy
 - [addtowhitelist][]
 - [readwhitelist][]
-- [readwhitelistd][]
+- [readwhitelistdb][]
 - [querywhitelist][]
 - [removefromwhitelist][]
 - [clearwhitelist][]
