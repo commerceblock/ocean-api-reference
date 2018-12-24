@@ -1084,7 +1084,7 @@ ocean-cli readwhitelist derivedkeys.txt
 
 ## readwhitelistdb
 
-The `readwhitelistdb` RPC adds the list of valid contract tweaked address to the node from a mongodb database to
+The `readwhitelistdb` RPC adds a list of valid contract tweaked addresses from a mongodb database to the node
 mempool whitelist. It requires the database environment variables or configuration options, and a correctly formatted 
 database as specified in [pkhwhitelistmongodb][].
 
