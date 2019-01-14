@@ -54,6 +54,7 @@ The following RPCs are unique to the Ocean client
 - [createrawissuance][]
 - [createrawreissuance][]
 - [createrawburn][]
+- [testmempoolaccept][]
 
 ### Policy
 - [addtowhitelist][]
@@ -863,6 +864,104 @@ Result:
 0200000000010a1511ccd0aeb158fddf5afbb32d52127b875c1c6e6de99041a14ea6024eac400000008000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002dd231b0001000000000754dee2e4940c7a0d5de1b201000000000000c350000000000000
 ```
 
+## testmempoolaccept
+
+The `testmempoolaccept` RPC determines the validity of a raw transaction without broadcasting it. It performs the exact same validity checks as performed on mempool acceptance, including locally configured policy rules, but without adding the transaction to the mempool.  
+
+*Parameter #1---signed raw transaction*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>rawtx</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>Hex encoded serialised transaction</td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #2---accept large fee*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>nLargeFee</td>
+   <td>boolean</td>
+   <td>Optional<br />(0 or 1)</td>
+   <td>Allow large fee</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---a JSON object containing the transaction ID, whether the transaction is accepted or rejected, and if rejected the reason*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>txid</td>
+   <td>string</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>The raw transaction ID</td>
+  </tr>
+ </tbody>
+ <tbody>
+  <tr>
+   <td>allowed</td>
+   <td>boolean</td>
+   <td>Required<br />(exactly 1)</td>
+   <td>The determination on whether the transaction is valid/allowed</td>
+  </tr>
+ </tbody>
+ <tbody>
+  <tr>
+   <td>reject-reason</td>
+   <td>string</td>
+   <td>Optional<br />(0 or 1)</td>
+   <td>The reason if the transaction would be rejected</td>
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli testmempoolaccept 0200000000010a1511ccd0aeb158fddf5afbb32d52127b875c1c6e6de99041a14ea6024eac400000008000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002dd231b0001000000000754dee2e4940c7a0d5de1b201000000000000c350000000000000
+```
+
+Result:
+
+```json
+{
+ "txid": 40ac4e02a64ea14190e96d6e1c5c877b12522db3fb5adffd58b1aed0cc11150a
+ "accept": 1
+}
+```
+
 ## getutxoassetinfo
 
 The `getutxoassetinfo` RPC returns a summary of the total amounts of unspent (and un-burnt) 
@@ -1449,6 +1548,7 @@ ocean-cli clearburnlist
 [createrawissuance]: #createrawissuance
 [createrawreissuance]: #createrawissuance
 [createrawburn]: #createrawburn
+[testmempoolaccept]: #testmempoolaccept
 [getutxoassetinfo]: #getutxoassetinfo
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
