@@ -55,6 +55,7 @@ The following RPCs are unique to the Ocean client
 - [createrawreissuance][]
 - [createrawburn][]
 - [testmempoolaccept][]
+- [createrawpolicytx][]
 
 ### Policy
 - [addtowhitelist][]
@@ -84,6 +85,8 @@ The following RPCs are unique to the Ocean client
 - [embedmapping][]
 - [issuecontrolscript][]
 - [initialfreecoinsdestination][]
+- [freezelistcoinsdestination][]
+- [burnlistcoinsdestination][]
 
 ## dumpderivedkeys
 
@@ -962,6 +965,446 @@ Result:
 }
 ```
 
+## createrawpolicytx
+
+The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encodes an address to be added to a policy list. To be accepted, the asset type must match the policy asset type as defined in the genesis block (via `-freezelistcoinsdestination` and `-burnlistcoinsdestination`. The policy asset input(s) are specified in an array, and the outputs are specified in an array of objects that contain a policy public key, the address to be added to to the policy list and the value. Spending these outputs removes the addresses from the policy lists. 
+
+*Parameter #1---Inputs*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td markdown="span">
+
+   Inputs
+
+   </td>
+
+   <td markdown="span">
+
+   array
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   An array of objects, each one to be used as an input to the transaction
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → Input
+
+   </td>
+
+   <td markdown="span">
+
+   object
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(1 or more)
+
+   </td>
+
+   <td markdown="span">
+
+   An object describing a particular input
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → →<br>`txid`
+
+   </td>
+
+   <td markdown="span">
+
+   string (hex)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The TXID of the outpoint to be spent encoded as hex in RPC byte order
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → →<br>`vout`
+
+   </td>
+
+   <td markdown="span">
+
+   number (int)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The output index number (vout) of the outpoint to be spent; the first output in a transaction is index `0`
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → →<br>`Sequence`
+
+   </td>
+
+   <td markdown="span">
+
+   number (int)
+
+   </td>
+
+   <td markdown="span">
+
+   Optional<br>(0 or 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The sequence number to use for the input
+
+   </td>
+
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #1---Addresses to add to policy lists and control keys*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td markdown="span">
+
+   Policy outputs
+
+   </td>
+
+   <td markdown="span">
+
+   array
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   An array of objects, each one is used to add an address to a policy list. 
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → Input
+
+   </td>
+
+   <td markdown="span">
+
+   object
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(1 or more)
+
+   </td>
+
+   <td markdown="span">
+
+   An object encoding an output with a policy list address. 
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → →<br>`pubkey`
+
+   </td>
+
+   <td markdown="span">
+
+   string (hex)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The public key of the policy authority wallet used to spend the output 
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → →<br>`value`
+
+   </td>
+
+   <td markdown="span">
+
+   number (coins)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The amount of policy asset to be sent to the output 
+
+   </td>
+
+  </tr>
+  <tr>
+   <td markdown="span">
+
+   → →<br>`address`
+
+   </td>
+
+   <td markdown="span">
+
+   string (base58check)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The address to be added to the policy list
+
+   </td>
+
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #3---locktime*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td markdown="span">
+
+   Locktime
+
+   </td>
+
+   <td markdown="span">
+
+   numeric (int)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   Indicates the earliest time (in block height or Unix epoch time) a transaction can be added to the block chain
+
+   </td>
+
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #4---policy asset*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td markdown="span">
+
+   Policy asset
+
+   </td>
+
+   <td markdown="span">
+
+   string (hex)
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The 32 byte asset ID of the policy asset of the list being updated
+
+   </td>
+
+  </tr>
+ </tbody>
+</table>
+
+*Result---the unsigned raw transaction in hex*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td markdown="span">
+
+   `result`
+
+   </td>
+
+   <td markdown="span">
+
+   string
+
+   </td>
+
+   <td markdown="span">
+
+   Required<br>(Exactly 1)
+
+   </td>
+
+   <td markdown="span">
+
+   The resulting unsigned raw transaction in serialized transaction format, encoded as hex.  If the transaction couldn't be generated, this will be set to JSON `null` and the JSON-RPC error field may contain an error message
+
+   </td>
+
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+elements-cli createrawpolicytx '''[
+  {
+    "txid": "43bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
+    "vout": 1
+  }
+]''' '''[
+  {
+    "pubkey": "03d5be1ca0b06b54f6a29a8e245fdf58698164538191c5b376d3b27e6d3229b81a",
+    "value": 10.0
+    "address": "1HPkc4to3GzVcEV8Le6sS4V5AXWQceH5kZ"
+  }
+]'''
+```
+
+Result:
+
+```text
+0200000000018eb8f2e93d81b9f904f8613b6520460c00f9313683b5574fc8b67c3e33e615550000000000ffffffff010131e34d9c314f12348e8b2cb401d07450ef5e831d11bba35bd9b124f52e78387301000000746a5288000047512103e6ec6419791bcdc9ec5b2cf7d25cfffa244f2cddfd9997dffbd002c4d88baabe21020000000000000000000000005923c34a75800d2e9a6894d846649b65995dc84252ae00000000
+```
+
 ## getutxoassetinfo
 
 The `getutxoassetinfo` RPC returns a summary of the total amounts of unspent (and un-burnt) 
@@ -1549,6 +1992,7 @@ ocean-cli clearburnlist
 [createrawreissuance]: #createrawissuance
 [createrawburn]: #createrawburn
 [testmempoolaccept]: #testmempoolaccept
+[createrawpolicytx]: #createrawpolicytx
 [getutxoassetinfo]: #getutxoassetinfo
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
@@ -1574,3 +2018,5 @@ ocean-cli clearburnlist
 [embedmapping]: #embedmapping
 [issuecontrolscript]: #issuecontrolscript
 [initialfreecoinsdestination]: #initialfreecoinsdestination
+[freezelistdestination]: #initialfreecoinsdestination
+[burnlistdestination]: #initialfreecoinsdestination
