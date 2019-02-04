@@ -1385,7 +1385,7 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
 *Example*
 
 ```bash
-elements-cli createrawpolicytx '''[
+ocean-cli createrawpolicytx '''[
   {
     "txid": "43bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
     "vout": 1
@@ -2018,5 +2018,5 @@ ocean-cli clearburnlist
 [embedmapping]: #embedmapping
 [issuecontrolscript]: #issuecontrolscript
 [initialfreecoinsdestination]: #initialfreecoinsdestination
-[freezelistdestination]: #initialfreecoinsdestination
-[burnlistdestination]: #initialfreecoinsdestination
+[freezelistcoinsdestination]: #initialfreecoinsdestination
+[burnlistcoinsdestination]: #initialfreecoinsdestination
