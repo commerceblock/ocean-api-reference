@@ -63,6 +63,12 @@ Note:
 
 Creating custom parameters requires corresponding changes to the electrum server. Configuration options for the electrum server live in `coins.py`. The best practice is to override the class Ocean or OceanTestnet, depending on whether it's a mainnet chain or a testnet chain, and override the address/key prefixes (for mainnet) **as well as** the `GENESIS_HASH`.
 
+Code change PRs:
+
+- https://github.com/commerceblock/ocean/pull/73
+- https://github.com/commerceblock/cb-electrum-server/pull/8
+- https://github.com/commerceblock/cb-electrum-server/pull/9
+
 ### scripts
 
 In order to generate multisig scripts and corresponding private keys a simple python [script](https://github.com/commerceblock/federation/blob/master/scripts/generate_multisig.py) can be used.
