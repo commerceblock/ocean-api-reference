@@ -24,24 +24,26 @@ attestationhash=18b4355a10177cd6d1e11985086aa252e0a64ae59d95dcba0d882cdd99fa3564
 
 Information on all the config arguments used, their importance and how to derive them.
 
-### chain
+### --chain
 
-*genesis hash critical:* **YES**
+genesis-hash critical | Optional
+--- | ---
+yes | yes (but ocean defaults to test params)
 
-*optional:* **YES - but defaults to custom params**
 
 Specifies the name of the chain. This is important because based on this name the parameters of the chain are decided. Currently the only parameter difference is in address/key prefixes but using the correct prefix is crucial on generating multisig scripts for other config arguments and also when importing a private key to a full node wallet.
 
-Currently the following hardcoded names exist (@`chainparamsbase.h`):
+
+Currently the following hardcoded names exist (from `chainparamsbase.h`):
 ```
 #define CHAINPARAMS_OCEAN_MAIN "ocean_main"
 #define CHAINPARAMS_OCEAN_TEST "ocean_test"
 #define CHAINPARAMS_GOLD_MAIN "gold_main"
 ```
 
-Unlesss the `--chain` parameter is specified then the default "ocean_test" name is chosen.
+Unlesss the `--chain` parameter is specified then the default **ocean_test** name is chosen.
 
-Based on this parameter the chain params are chosen as (@`chainparams.cpp`):
+Based on this parameter the chain params are chosen as (from `chainparams.cpp`):
 ```
 std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain)
 {
@@ -53,17 +55,17 @@ std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain)
 }
 ```
 
-Example values:
+**Example values:**
 
 - for ocean main: `chain=ocean_main`
 - for gold mainnet: `chain=gold_main`
 - for gold test: `chain=gold_test` or any other value
 
-Note:
+**Note:**
 
-Creating custom parameters requires corresponding changes to the electrum server. Configuration options for the electrum server live in `coins.py`. The best practice is to override the class Ocean or OceanTestnet, depending on whether it's a mainnet chain or a testnet chain, and override the address/key prefixes (for mainnet) **as well as** the `GENESIS_HASH`.
+Creating custom parameters requires corresponding changes to the electrum server. Configuration options for the electrum server live in `cb-electrum-server/electrumx/lib/coins.py`. The best practice is to override the class Ocean or OceanTestnet, depending on whether it's a mainnet chain or a testnet chain, and override the address/key prefixes (mainnet only) **as well as** the `GENESIS_HASH`.
 
-Code change PRs:
+**Code change PRs:**
 
 - https://github.com/commerceblock/ocean/pull/73
 - https://github.com/commerceblock/cb-electrum-server/pull/8
@@ -75,17 +77,17 @@ In order to generate multisig scripts and corresponding private keys a simple py
 
 This requires specifying number of keys, number of signatures and WIF (wallet private key format) prefix. The WIF can be found in the chosen chain parameters (named SECRET_KEY).
 
-The current values are:
+**Current values:**
 
 - Main Params (ocean main): 128
 - Gold Params (gold main): 180
 - Custom Params (any other chain / testnet): 239
 
-#### issuecontrolscript
+### --issuecontrolscript
 
-*genesis hash critical:* **YES**
-
-*optional:* **YES**
+genesis-hash critical | Optional
+--- | ---
+yes | yes
 
 Script determining ownership of the issuance process.
 
@@ -97,19 +99,19 @@ script
 52210333f1635e1140dcf12dfc25ab2b1f993e7d9f9fd69481808af7d57b5892fe2a6e21028e029a8383c812f7a1c64a5daeee0ac1df79dd5a0915654733ad0d5c2a7cda642103856c9deac8e061e7cb086922c73104869708a8081dc38e1c4290d6d409476cc553ae
 ```
 
-#### initialfreecoinsdestination
+### --initialfreecoinsdestination
 
-*genesis hash critical:* **YES**
-
-*optional:* **NO**
+genesis-hash critical | Optional
+--- | ---
+yes | no
 
 Script destination for free coins, required for issuance. Usually same target as `issuecontrolscript`. The number of free coins is specified by `initialfreecoins`.
 
-#### con_mandatorycoinbase
+### --con_mandatorycoinbase
 
-*genesis hash critical:* **YES**
-
-*optional:* **NO**
+genesis-hash critical | Optional
+--- | ---
+yes | no
 
 Script destination for all sidechain fees. Coinbase transaction of each new block pays all fees to this script.
 
@@ -121,11 +123,11 @@ script
 51210282e9e791e3ade9242eee103284315d61933afcb5ae3006bd61560a5819dc9cd451ae
 ```
 
-#### signblockscript
+### --signblockscript
 
-*genesis hash critical:* **YES**
-
-*optional:* **NO**
+genesis-hash critical | Optional
+--- | ---
+yes | no
 
 The signblock script is responsible for block generation in the chain. On non-HSM chains a similar approach to the other scripts should be used.
 
@@ -139,10 +141,10 @@ docker build --build-arg user_pin=$USER_PIN --build-arg key_label=$KEY_LABEL -f 
 script: 532103041f9d9edc4e494b07eec7d3f36cedd4b2cfbb6fe038b6efaa5f56b9636abd7b21037c06b0c66c98468d64bb43aff91a65c0a576113d8d978c3af191e38845ae5dab21031bd16518d76451e7cf13f64087e4ae4816d08ae1d579fa6c172dcfe4476bd7da210226c839b56b99af781bbb4ce14365744253ae75ffe6f9182dd7b0df95c439537a21023cd2fc00c9cb185b4c0da16a45a1039e16709a61fb22340645790b7d1391b66055ae
 ```
 
-### attestationhash
+### --attestationhash
 
-*genesis hash critical:* **YES**
-
-*optional:* **NO - if using Mainstay**
+genesis-hash critical | Optional
+--- | ---
+yes | no (if using Mainstay)
 
 Reference to a transaction id hash in the mainstay staychain. Either first/latest staychain hash or the hash at which our chain genesis was committed.
