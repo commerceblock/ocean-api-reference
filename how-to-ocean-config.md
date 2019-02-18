@@ -31,7 +31,7 @@ genesis-hash critical | Optional
 yes | yes (but ocean defaults to test params)
 
 
-Specifies the name of the chain. This is important because based on this name the parameters of the chain are decided. Currently the only parameter difference is in address/key prefixes but using the correct prefix is crucial on generating multisig scripts for other config arguments and also when importing a private key to a full node wallet.
+Specifies the name of the chain. Chain name is important as based on this the client decides which chain parameters to use. Chain parameters differentiate in address/key prefixes and are thus crucial in generating multisig scripts for other config arguments and also when importing a private keys to full node wallets.
 
 
 Currently the following hardcoded names exist (from `chainparamsbase.h`):
@@ -70,6 +70,29 @@ Creating custom parameters requires corresponding changes to the electrum server
 - https://github.com/commerceblock/ocean/pull/73
 - https://github.com/commerceblock/cb-electrum-server/pull/8
 - https://github.com/commerceblock/cb-electrum-server/pull/9
+
+### terms and conditions
+
+genesis-hash critical | Optional
+--- | ---
+yes | yes
+
+The terms and conditions are required in the derivation of new ocean addresses, where the contract hash is used to tweak the corresponding priv/pub key (per BIP175). This hash is, for reference and validation, included in the genesis block of the chain, therefore any ocean node attempting to connect to a speficic chain that has this functionality enabled will need to have a copy of the terms and conditions in the datadir.
+
+
+The terms and conditions are copied as copied as part of building the Dockerfile but will need to be copied manually when running ocean independently. The latest contracts can be found in `ocean/doc/$chain`. The `chain` name specified above is also used as the directory name under `doc` to specify where the contract for each chain is stored.
+
+**Example:**
+
+For `chain=ocean_main` contract `doc/ocean_main/latest.txt` is used and so on...
+
+**Note:**
+
+The same terms and conditions will need to be used by the electrum wallet client. A public copy will be provided.
+
+**Code change PRs:**
+
+- https://github.com/commerceblock/ocean/pull/74
 
 ### scripts
 
