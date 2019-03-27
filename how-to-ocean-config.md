@@ -10,6 +10,16 @@ rpcallowip=10.0.3.0/24
 txindex=1
 listen=1
 connect=nodeX:7042
+pkhwhitelist=1
+freezelist=1
+burnlist=1
+reindex=1
+rescan=1
+freezelistcoinsdestination=76a9149d2eaa0bb68b5b9ba11250994fdfce78f41fdc0188ac
+burnlistcoinsdestination=76a91415de997afac9857dc97cdd43803cf1138f3aaef788ac
+whitelistcoinsdestination=76a9144ff9b5c6885f87fb5519cc45c1474f301a73224a88ac
+initialfreecoinscoinsdestination=76a9142967e87b159cb36b1dec8d95382b35aef01a8ad788ac
+
 
 initialfreecoins=2100000000000000
 signblockscript=532103041f9d9edc4e494b07eec7d3f36cedd4b2cfbb6fe038b6efaa5f56b9636abd7b21037c06b0c66c98468d64bb43aff91a65c0a576113d8d978c3af191e38845ae5dab21031bd16518d76451e7cf13f64087e4ae4816d08ae1d579fa6c172dcfe4476bd7da210226c839b56b99af781bbb4ce14365744253ae75ffe6f9182dd7b0df95c439537a21023cd2fc00c9cb185b4c0da16a45a1039e16709a61fb22340645790b7d1391b66055ae
@@ -80,7 +90,7 @@ yes | yes
 The terms and conditions are required in the derivation of new ocean addresses, where the contract hash is used to tweak the corresponding priv/pub key (per BIP175). This hash is, for reference and validation, included in the genesis block of the chain, therefore any ocean node attempting to connect to a speficic chain that has this functionality enabled will need to have a copy of the terms and conditions in the datadir.
 
 
-The terms and conditions are copied as copied as part of building the Dockerfile but will need to be copied manually when running ocean independently. The latest contracts can be found in `ocean/doc/$chain`. The `chain` name specified above is also used as the directory name under `doc` to specify where the contract for each chain is stored.
+The terms and conditions are copied as part of building the Dockerfile but will need to be copied manually when running ocean independently. The latest contracts can be found in `ocean/doc/$chain`. The `chain` name specified above is also used as the directory name under `doc` to specify where the contract for each chain is stored.
 
 **Example:**
 
@@ -130,6 +140,30 @@ yes | no
 
 Script destination for free coins, required for issuance. Usually same target as `issuecontrolscript`. The number of free coins is specified by `initialfreecoins`.
 
+### -freezelistcoinsdestination
+
+genesis-hash critical | Optional
+--- | ---
+yes | yes
+
+Script destination for freezelist coins, required if freezelist is enabled (option -freezelist=1). 
+
+### -burnlistcoinsdestination
+
+genesis-hash critical | Optional
+--- | ---
+yes | yes
+
+Script destination for burnlist coins, required if burnlist is enabled (option -burnlist=1). 
+
+### -whitelistcoinsdestination
+
+genesis-hash critical | Optional
+--- | ---
+yes | yes
+
+Script destination for public key hash whitlelist coins, required if whitelist is enabled (option -pkhwhitelist=1). 
+
 ### --con_mandatorycoinbase
 
 genesis-hash critical | Optional
@@ -163,6 +197,40 @@ docker build --build-arg user_pin=$USER_PIN --build-arg key_label=$KEY_LABEL -f 
 ...
 script: 532103041f9d9edc4e494b07eec7d3f36cedd4b2cfbb6fe038b6efaa5f56b9636abd7b21037c06b0c66c98468d64bb43aff91a65c0a576113d8d978c3af191e38845ae5dab21031bd16518d76451e7cf13f64087e4ae4816d08ae1d579fa6c172dcfe4476bd7da210226c839b56b99af781bbb4ce14365744253ae75ffe6f9182dd7b0df95c439537a21023cd2fc00c9cb185b4c0da16a45a1039e16709a61fb22340645790b7d1391b66055ae
 ```
+
+### --pkhwhitelist
+
+genesis-hash critical | Optional
+--- | ---
+yes | yes
+
+Wether to enforce whitelisting rules at this node. Set to pkhwhiteliist=1 for signing nodes is whitelisting is to be used.
+
+### --pkhwhitelist-scan
+
+genesis-hash critical | Optional
+--- | ---
+no | yes
+
+Wether to scan the blockchain for whitelisted addresses and KYC public keys. pkhwhitelist-scan=1 is required for all client nodes for used to transact on the blockchain or whitelist new addresses if the signing nodes enforce whitelisting rules.
+
+### --rescan
+
+genesis-hash critical | Optional
+--- | ---
+no | yes
+
+Rescan the blockchain for wallet addresses when restarting nodes, or adding new private keys to the wallet. Set rescan=1 for all nodes in the network using either pkhwhitelist=1 or pkhwhitelist-scan=1.
+
+
+### --reindex
+
+genesis-hash critical | Optional
+--- | ---
+no | yes
+
+Rescan the UTXO set when restarting nodes. Set reindex=1 for all nodes in the network using either pkhwhitelist=1 or pkhwhitelist-scan=1.
+
 
 ### --attestationhash
 
