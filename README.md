@@ -44,6 +44,8 @@ The following RPCs are unique to the Ocean client
 ### Wallet
 - [dumpderivedkeys][]
 - [validatederivedkeys][]
+- [dumpkycfile][]
+- [readkycfile][]
 - [getderivedkeys][]
 - [getcontract][]
 - [getcontracthash][]
