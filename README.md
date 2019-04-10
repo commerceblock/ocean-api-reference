@@ -58,6 +58,8 @@ The following RPCs are unique to the Ocean client
 - [createrawburn][]
 - [testmempoolaccept][]
 - [createrawpolicytx][]
+- [createrawrequesttx][]
+- [getrequests][]
 
 ### Policy
 - [addtowhitelist][]
@@ -89,6 +91,7 @@ The following RPCs are unique to the Ocean client
 - [initialfreecoinsdestination][]
 - [freezelistcoinsdestination][]
 - [burnlistcoinsdestination][]
+- [permissioncoinsdestination][]
 
 ## dumpderivedkeys
 
@@ -395,8 +398,8 @@ f4f30db53238a7529bc51fcda04ea22bd8f8b188622a6488da12281874b71f72
 
 ## createrawissuance
 
-The `createrawissuance` RPC creates an unblinded raw unsigned issuance transaction with specified 
-outputs and spending from a specified input containing an amount of policy asset. 
+The `createrawissuance` RPC creates an unblinded raw unsigned issuance transaction with specified
+outputs and spending from a specified input containing an amount of policy asset.
 
 *Parameter #1---the Base58check address for the issued asset*
 
@@ -603,8 +606,8 @@ Result:
 
 ## createrawreissuance
 
-The `createrawreissuance` RPC creates a raw unsigned re-issuance (asset inflation) transaction with specified 
-outputs and spending from a specified input containing a valid re-issuance token. 
+The `createrawreissuance` RPC creates a raw unsigned re-issuance (asset inflation) transaction with specified
+outputs and spending from a specified input containing a valid re-issuance token.
 
 *Parameter #1---the Base58check address for the re-issued asset*
 
@@ -769,7 +772,7 @@ Result:
 
 ## createrawburn
 
-The `createrawburn` RPC creates a raw unsigned burn (OP_RETURN) transaction with a single input and single output. 
+The `createrawburn` RPC creates a raw unsigned burn (OP_RETURN) transaction with a single input and single output.
 
 *Parameter #1---input TXID*
 
@@ -869,9 +872,48 @@ Result:
 0200000000010a1511ccd0aeb158fddf5afbb32d52127b875c1c6e6de99041a14ea6024eac400000008000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002dd231b0001000000000754dee2e4940c7a0d5de1b201000000000000c350000000000000
 ```
 
+## createrawrequesttx
+
+The `createrawrequesttx` RPC creates a raw request transaction with a single input and single output.
+
+*Parameter #1---Input object with details on transaction to be spent*
+
+*Parameter #2---Output object with request details*
+
+*Result---the unsigned raw transaction in hex*
+
+*Example*
+
+```bash
+ocean-cli createrawrequesttx '''[
+  {
+    "txid": "43bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
+    "vout": 1,
+    "asset": "678d75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4"
+  }
+]''' '''[
+  {
+    "pubkey": "03d5be1ca0b06b54f6a29a8e245fdf58698164538191c5b376d3b27e6d3229b81a",
+    "decayConst": 5,
+    "endBlockHeight": 250,
+    "fee": 5,
+    "genesisBlockHash": "99bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
+    "startBlockHeight": 100,
+    "tickets": 150,
+    "value": 1000.0
+  }
+]'''
+```
+
+Result:
+
+```text
+02000000000151227925212487ef62c10e46f14aec78dce956b02eb41f7e2cce8b6d56292db40100000000feffffff0101d08413554d89a69f0d93a6f7e33242d472a6503b11b1b7c10d3134afb2a36d0101000000174876e800006d0169b17551210246e99744bdee2ce153eb6185019e73ff6bb4d050d50d1a1d7d773f45474d4c362102051d7e7caa636a8fb1eaca4fb163248aff57d5e4e04e84734101b138e1a07d862103640000000a0000000a000000010000000000000000000000000000000000000053ae66000000
+```
+
 ## testmempoolaccept
 
-The `testmempoolaccept` RPC determines the validity of a raw transaction without broadcasting it. It performs the exact same validity checks as performed on mempool acceptance, including locally configured policy rules, but without adding the transaction to the mempool.  
+The `testmempoolaccept` RPC determines the validity of a raw transaction without broadcasting it. It performs the exact same validity checks as performed on mempool acceptance, including locally configured policy rules, but without adding the transaction to the mempool.
 
 *Parameter #1---signed raw transaction*
 
@@ -969,7 +1011,7 @@ Result:
 
 ## createrawpolicytx
 
-The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encodes an address to be added to a policy list. To be accepted, the asset type must match the policy asset type as defined in the genesis block (via `-freezelistcoinsdestination` and `-burnlistcoinsdestination`. The policy asset input(s) are specified in an array, and the outputs are specified in an array of objects that contain a policy public key, the address to be added to to the policy list and the value. Spending these outputs removes the addresses from the policy lists. 
+The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encodes an address to be added to a policy list. To be accepted, the asset type must match the policy asset type as defined in the genesis block (via `-freezelistcoinsdestination` and `-burnlistcoinsdestination`. The policy asset input(s) are specified in an array, and the outputs are specified in an array of objects that contain a policy public key, the address to be added to to the policy list and the value. Spending these outputs removes the addresses from the policy lists.
 
 *Parameter #1---Inputs*
 
@@ -1149,7 +1191,7 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
 
    <td markdown="span">
 
-   An array of objects, each one is used to add an address to a policy list. 
+   An array of objects, each one is used to add an address to a policy list.
 
    </td>
 
@@ -1175,7 +1217,7 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
 
    <td markdown="span">
 
-   An object encoding an output with a policy list address. 
+   An object encoding an output with a policy list address.
 
    </td>
 
@@ -1201,7 +1243,7 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
 
    <td markdown="span">
 
-   The public key of the policy authority wallet used to spend the output 
+   The public key of the policy authority wallet used to spend the output
 
    </td>
 
@@ -1227,7 +1269,7 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
 
    <td markdown="span">
 
-   The amount of policy asset to be sent to the output 
+   The amount of policy asset to be sent to the output
 
    </td>
 
@@ -1409,9 +1451,9 @@ Result:
 
 ## getutxoassetinfo
 
-The `getutxoassetinfo` RPC returns a summary of the total amounts of unspent (and un-burnt) 
-assets in the UTXO set. Ammounts in transactions marked as frozen (i.e. with one output 
-having a zero address) are listed in a separate field. 
+The `getutxoassetinfo` RPC returns a summary of the total amounts of unspent (and un-burnt)
+assets in the UTXO set. Ammounts in transactions marked as frozen (i.e. with one output
+having a zero address) are listed in a separate field.
 
 *Parameters: none*
 
@@ -1452,7 +1494,7 @@ Result:
     "amountspendable": 3.00000000,
     "frozentxouts": 0,
     "amountfrozen": 0.00000000
-  }, 
+  },
   {
     "asset": "b2e15d0d7a0c94e4e2ce0fe6e8691b9e451377f6e46e8045a86f7c4b5d4f0f23",
     "spendabletxouts": 107,
@@ -1460,6 +1502,56 @@ Result:
     "frozentxouts": 0,
     "amountfrozen": 0.00000000
   }
+]
+```
+
+## getrequests
+
+The `getrequests` RPC returns all the active client requests in the blockchain
+
+*Parameter #1---the client genesis block hash*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>genesis block hash</td>
+   <td>hash (string)</td>
+   <td>Optional</td>
+   <td>The genesis block hash to filter requests by</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---an array of JSON objects containing details for each active request*
+
+*Example*
+
+```bash
+ocean-cli getrequests
+ocean-cli getrequests 123450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05
+```
+
+Result:
+
+```json
+[
+  {
+    "genesisBlock": "123450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05",
+    "startBlockHeight": 105,
+    "numTickets": 20,
+    "decayConst": 2,
+    "feePercentage": 5,
+    "endBlockHeight": 350,
+    "txid": "666450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05"
+  },
 ]
 ```
 
@@ -1703,9 +1795,9 @@ ocean-cli dumpwhitelist dumpfile.txt
 ## addtofreezelist
 
 The `addtofreezelist` RPC adds an address to the node
-mempool freezelist. Transactions spending from UTXOs with 
-output addresses on the freezelist are blocked from entering the 
-mempool if the '-freezelist' configuration option is enabled. 
+mempool freezelist. Transactions spending from UTXOs with
+output addresses on the freezelist are blocked from entering the
+mempool if the '-freezelist' configuration option is enabled.
 
 *Parameter #1---the Base58check address*
 
@@ -1844,11 +1936,11 @@ ocean-cli clearfreezelist
 ## addtofreezelist
 
 The `addtoburnlist` RPC adds an address to the node
-mempool burnlist. Transactions spending from UTXOs with 
-output addresses on the freezelist are alowed into the 
-mempool if these addresses are also on the burnlist and have 
-only TX_FEE and TX_NULL_DATA outputs (with both the `-freezelist` 
-and `-burnlist` configurations options enabled). 
+mempool burnlist. Transactions spending from UTXOs with
+output addresses on the freezelist are alowed into the
+mempool if these addresses are also on the burnlist and have
+only TX_FEE and TX_NULL_DATA outputs (with both the `-freezelist`
+and `-burnlist` configurations options enabled).
 
 *Parameter #1---the Base58check address*
 
@@ -1993,9 +2085,11 @@ ocean-cli clearburnlist
 [createrawissuance]: #createrawissuance
 [createrawreissuance]: #createrawissuance
 [createrawburn]: #createrawburn
+[createrawrequesttx]: #createrawrequesttx
 [testmempoolaccept]: #testmempoolaccept
 [createrawpolicytx]: #createrawpolicytx
 [getutxoassetinfo]: #getutxoassetinfo
+[getrequests]: #getrequests
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
 [querywhitelist]: #querywhitelist
