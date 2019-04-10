@@ -889,7 +889,6 @@ ocean-cli createrawrequesttx '''[
   {
     "txid": "43bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
     "vout": 1,
-    "asset": "678d75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4"
   }
 ]''' '''[
   {
