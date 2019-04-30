@@ -899,7 +899,8 @@ ocean-cli createrawrequesttx '''[
     "genesisBlockHash": "99bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
     "startBlockHeight": 100,
     "tickets": 150,
-    "value": 1000.0
+    "value": 1000.0,
+    "startPrice": 5.0
   }
 ]'''
 ```
@@ -1547,6 +1548,8 @@ Result:
     "startBlockHeight": 105,
     "numTickets": 20,
     "decayConst": 2,
+    "startPrice": 5.0,
+    "auctionPrice": 4.8,
     "feePercentage": 5,
     "endBlockHeight": 350,
     "txid": "666450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05"
