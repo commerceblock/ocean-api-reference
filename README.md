@@ -1552,6 +1552,7 @@ Result:
     "auctionPrice": 4.8,
     "feePercentage": 5,
     "endBlockHeight": 350,
+    "confirmedBlockHeight": 35,
     "txid": "666450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05"
   },
 ]
