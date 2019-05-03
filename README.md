@@ -59,7 +59,9 @@ The following RPCs are unique to the Ocean client
 - [testmempoolaccept][]
 - [createrawpolicytx][]
 - [createrawrequesttx][]
+- [createrawbidtx][]
 - [getrequests][]
+- [getrequestbids][]
 
 ### Policy
 - [addtowhitelist][]
@@ -872,6 +874,45 @@ Result:
 0200000000010a1511ccd0aeb158fddf5afbb32d52127b875c1c6e6de99041a14ea6024eac400000008000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002dd231b0001000000000754dee2e4940c7a0d5de1b201000000000000c350000000000000
 ```
 
+## createrawbidtx
+
+The `createrawbidtx` RPC creates a raw bid transaction with a single input and multiple outputs.
+
+*Parameter #1---Input object with details on transaction to be spent*
+
+*Parameter #2---Output object with bid and request details*
+
+*Result---the unsigned raw transaction in hex*
+
+*Example*
+
+```bash
+ocean-cli createrawbidtx '''[
+  {
+    "txid": "43bd75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4",
+    "vout": 1,
+    "asset": "aaad75af773cce38fd190f6c0943d311ce2dd8a26c7e7a9e600c58f8b21e53d4"
+  }
+]''' '''[
+  {
+    "pubkey": "03d5be1ca0b06b54f6a29a8e245fdf58698164538191c5b376d3b27e6d3229b81a",
+    "value": 1000.0,
+    "change": 500.0,
+    "changeAddress": "2drB6JQJTCe9bWc8NQ7cBjUsQejkJWs3ptg",
+    "fee": 5,
+    "endBlockHeight": 250,
+    "requestTxid": "d79b437a45a3d7343fb58c05163e04604a9cdb62a8e454dd1292d6645578043a",
+    "feePubkey": "03f6be1ca0b06b54f6a29a8e245fdf58698164538191c5b376d3b27e6d3229b81a",
+  }
+]'''
+```
+
+Result:
+
+```text
+02000000000151227925212487ef62c10e46f14aec78dce956b02eb41f7e2cce8b6d56292db40100000000feffffff0101d08413554d89a69f0d93a6f7e33242d472a6503b11b1b7c10d3134afb2a36d0101000000174876e800006d0169b17551210246e99744bdee2ce153eb6185019e73ff6bb4d050d50d1a1d7d773f45474d4c362102051d7e7caa636a8fb1eaca4fb163248aff57d5e4e04e84734101b138e1a07d862103640000000a0000000a000000010000000000000000000000000000000000000053ae66000000
+```
+
 ## createrawrequesttx
 
 The `createrawrequesttx` RPC creates a raw request transaction with a single input and single output.
@@ -1503,6 +1544,64 @@ Result:
     "amountfrozen": 0.00000000
   }
 ]
+
+```
+## getrequestbids
+
+The `getrequestbids` RPC returns the request and successful bids
+
+*Parameter #1---the request transaction hash*
+
+<table>
+ <thead>
+  <tr>
+   <th>Name</th>
+   <th>Type</th>
+   <th>Presence</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>transaction hash</td>
+   <td>hash (string)</td>
+   <td>Mandatory</td>
+   <td>The transaction hash to filter requests by</td>
+  </tr>
+ </tbody>
+</table>
+
+*Result---a JSON object containing details for the active request and bids*
+
+*Example*
+
+```bash
+ocean-cli getrequestbids 123450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05
+```
+
+Result:
+
+```json
+[
+  {
+    "genesisBlock": "666450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05",
+    "startBlockHeight": 105,
+    "numTickets": 20,
+    "decayConst": 2,
+    "startPrice": 5.0,
+    "auctionPrice": 4.8,
+    "feePercentage": 5,
+    "endBlockHeight": 350,
+    "confirmedBlockHeight": 35,
+    "txid": "123450e138b1014173844ee0e4d557ff8a2463b14fcaeab18f6a63aa7c7e1d05",
+    "bids": [
+        {
+            "txid": "8e5ebb572e5b410369af7f818aeee2ee313aca04c3325c407fe315c23fb73cc5",
+            "feePubKey": "0300adf7a8f55f92f8be6a5ed7619d1821c5bc9901f5592badea04677043b83656"
+        },
+    ]
+  },
+]
 ```
 
 ## getrequests
@@ -2089,10 +2188,12 @@ ocean-cli clearburnlist
 [createrawreissuance]: #createrawissuance
 [createrawburn]: #createrawburn
 [createrawrequesttx]: #createrawrequesttx
+[createrawbidtx]: #createrawbidtx
 [testmempoolaccept]: #testmempoolaccept
 [createrawpolicytx]: #createrawpolicytx
 [getutxoassetinfo]: #getutxoassetinfo
 [getrequests]: #getrequests
+[getrequestbids]: #getrequestbids
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
 [querywhitelist]: #querywhitelist
