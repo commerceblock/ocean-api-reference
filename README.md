@@ -165,7 +165,127 @@ tweaked with the current contract hash.
 *Example*
 
 ```text
-ocean-cli validatederivedkeys
+ocean-cli validatederivedkeys filename.txt
+```
+
+## dumpkycfile
+
+The `dumpkycfile` RPC outputs an encrypted list of wallet tweaked public keys. A timestamp and best block hash of when the file was constructed is included.
+
+*Parameter #1---the filename of the output file*
+
+<table>
+<thead>
+ <tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Presence</th>
+  <th>Description</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td>filename</td>
+  <td>string</td>
+  <td>Required<br />(exactly 1)</td>
+  <td markdown="block">
+
+  The name of the output file for the list of tweaked public keys
+
+  </td>
+ </tbody>
+</table>
+
+*Parameter #2---the public key with which to encrypt*
+
+<table>
+<thead>
+ <tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Presence</th>
+  <th>Description</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td>public key</td>
+  <td>string</td>
+  <td>Optional<br />(0 or 1)</td>
+  <td markdown="block">
+
+  The specific public key to be used for file encryption
+
+  </td>
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli dumpkycfile dumpfile.txt 1CDXUtbF3bBtritydFMKhRbbYhxDgCF5oH
+```
+
+## readkycfile
+
+The `readkycfile` RPC reads in an encrypted list of tweaked public keys (as produced by [dumpkycfile][]) from a specified file, and outputs the unencrypted list of tweaked addresses along with their corresponding non-tweaked public keys.
+
+
+*Parameter #1---the encrypted filename*
+
+<table>
+<thead>
+ <tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Presence</th>
+  <th>Description</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td>encrypted filename</td>
+  <td>string</td>
+  <td>Required<br />(exactly 1)</td>
+  <td markdown="block">
+
+  The name of the file containing the encrypted tweaked public keys
+
+  </td>
+  </tr>
+ </tbody>
+</table>
+
+*Parameter #2---the filename of the output file*
+
+<table>
+<thead>
+ <tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Presence</th>
+  <th>Description</th>
+ </tr>
+</thead>
+<tbody>
+ <tr>
+  <td>filename</td>
+  <td>string</td>
+  <td>Required<br />(exactly 1)</td>
+  <td markdown="block">
+
+  The name of the output file for the list of tweaked public keys and coresponding addresses
+  
+  </td>
+  </tr>
+ </tbody>
+</table>
+
+*Example*
+
+```bash
+ocean-cli readkycfile dumpfile.txt dumpfileout.txt
 ```
 
 ## getderivedkeys
@@ -2180,6 +2300,8 @@ ocean-cli clearburnlist
 
 [dumpderivedkeys]: #dumpderivedkeys
 [validatederivedkeys]: #validatederivedkeys
+[dumpkycfile]: #dumpkycfile
+[readkycfile]: #readkycfile
 [getderivedkeys]: #getderivedkeys
 [getcontract]: #getcontract
 [getcontracthash]: #getcontracthash
