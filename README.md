@@ -1188,133 +1188,83 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
  <tbody>
   <tr>
    <td markdown="span">
-
    Inputs
-
    </td>
-
    <td markdown="span">
-
    array
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    An array of objects, each one to be used as an input to the transaction
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → Input
-
    </td>
-
    <td markdown="span">
-
    object
-
    </td>
-
    <td markdown="span">
-
    Required<br>(1 or more)
-
    </td>
-
    <td markdown="span">
 
    An object describing a particular input
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → →<br>`txid`
-
    </td>
-
    <td markdown="span">
-
    string (hex)
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    The TXID of the outpoint to be spent encoded as hex in RPC byte order
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → →<br>`vout`
-
    </td>
-
    <td markdown="span">
-
    number (int)
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    The output index number (vout) of the outpoint to be spent; the first output in a transaction is index `0`
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → →<br>`Sequence`
-
    </td>
-
    <td markdown="span">
-
    number (int)
-
    </td>
-
    <td markdown="span">
-
    Optional<br>(0 or 1)
-
    </td>
-
    <td markdown="span">
 
    The sequence number to use for the input
 
    </td>
-
   </tr>
  </tbody>
 </table>
@@ -1333,133 +1283,83 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
  <tbody>
   <tr>
    <td markdown="span">
-
    Policy outputs
-
    </td>
-
    <td markdown="span">
-
    array
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
-   An array of objects, each one is used to add an address to a policy list.
+   An array of objects, each one is used to add an address to a policy list
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → Input
-
    </td>
-
    <td markdown="span">
-
    object
-
    </td>
-
    <td markdown="span">
-
    Required<br>(1 or more)
-
    </td>
-
    <td markdown="span">
 
-   An object encoding an output with a policy list address.
+   An object encoding an output with a policy list address
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → →<br>`pubkey`
-
    </td>
-
    <td markdown="span">
-
    string (hex)
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    The public key of the policy authority wallet used to spend the output
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → →<br>`value`
-
    </td>
-
    <td markdown="span">
-
    number (coins)
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    The amount of policy asset to be sent to the output
 
    </td>
-
   </tr>
   <tr>
    <td markdown="span">
-
    → →<br>`address`
-
    </td>
-
    <td markdown="span">
-
    string (base58check)
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    The address to be added to the policy list
 
    </td>
-
   </tr>
  </tbody>
 </table>
@@ -1478,29 +1378,19 @@ The `createrawpolicytx` RPC creates a raw unsigned policy transaction that encod
  <tbody>
   <tr>
    <td markdown="span">
-
    Locktime
-
    </td>
-
    <td markdown="span">
-
    numeric (int)
-
    </td>
-
    <td markdown="span">
-
    Required<br>(exactly 1)
-
    </td>
-
    <td markdown="span">
 
    Indicates the earliest time (in block height or Unix epoch time) a transaction can be added to the block chain
 
    </td>
-
   </tr>
  </tbody>
 </table>
@@ -1613,7 +1503,7 @@ Result:
 ## getutxoassetinfo
 
 The `getutxoassetinfo` RPC returns a summary of the total amounts of unspent (and un-burnt)
-assets in the UTXO set. Ammounts in transactions marked as frozen (i.e. with one output
+assets in the UTXO set. Amounts in transactions marked as frozen (i.e. with one output
 having a zero address) are listed in a separate field.
 
 *Parameters: none*
@@ -1781,7 +1671,7 @@ Result:
 
 The `addtowhitelist` RPC adds a valid contract tweaked address to the node
 mempool whitelist. It requires both an address and corresponding base public
-key, and the RPC cheacks that the address is valid and has been tweaked
+key, and the RPC checks that the address is valid and has been tweaked
 from the supplied base public key with the current
 contract hash as present in the most recent block header.
 
@@ -1827,7 +1717,7 @@ contract hash as present in the most recent block header.
  </tbody>
 </table>
 
-*Result---none if valid, errors returned if invalid inoputs*
+*Result---none if valid, errors returned if invalid inputs*
 
 *Example*
 
@@ -1898,7 +1788,7 @@ Result:
 
 The `readwhitelist` RPC adds a list of valid contract tweaked address to the node
 mempool whitelist. It requires a file that contains a list of both an address and corresponding base public
-key, and the RPC cheacks that each address is valid and has been tweaked
+key, and the RPC checks that each address is valid and has been tweaked
 from the supplied base public key with the current
 contract hash as present in the most recent block header. The file format is as decribed in [dumpderivedkeys][].
 
@@ -1923,7 +1813,7 @@ contract hash as present in the most recent block header. The file format is as 
  </tbody>
 </table>
 
-*Result---none if valid, errors returned if invalid inoputs*
+*Result---none if valid, errors returned if invalid inputs*
 
 *Example*
 
@@ -1956,7 +1846,7 @@ The `removefromwhitelist` RPC removes a specified address from the node mempool 
  </tbody>
 </table>
 
-*Result---none if valid, errors returned if invalid inoputs*
+*Result---none if valid, errors returned if invalid inputs*
 
 *Example*
 
@@ -1970,7 +1860,7 @@ The `clearwhitelist` RPC clears the mempool whitelist of all addresses.
 
 *Parameters: none*
 
-*Result: nome*
+*Result: none*
 
 *Example*
 
@@ -2133,7 +2023,7 @@ The `removefromfreezelist` RPC removes a specified address from the node mempool
  </tbody>
 </table>
 
-*Result---none if valid, errors returned if invalid inoputs*
+*Result---none if valid, errors returned if invalid inputs*
 
 *Example*
 
@@ -2147,7 +2037,7 @@ The `clearfreezelist` RPC clears the mempool whitelist of all addresses.
 
 *Parameters: none*
 
-*Result: nome*
+*Result: none*
 
 *Example*
 
@@ -2155,11 +2045,11 @@ The `clearfreezelist` RPC clears the mempool whitelist of all addresses.
 ocean-cli clearfreezelist
 ```
 
-## addtofreezelist
+## addtoburnlist
 
 The `addtoburnlist` RPC adds an address to the node
 mempool burnlist. Transactions spending from UTXOs with
-output addresses on the freezelist are alowed into the
+output addresses on the freezelist are allowed into the
 mempool if these addresses are also on the burnlist and have
 only TX_FEE and TX_NULL_DATA outputs (with both the `-freezelist`
 and `-burnlist` configurations options enabled).
@@ -2276,7 +2166,7 @@ The `removefromburnlist` RPC removes a specified address from the node mempool b
  </tbody>
 </table>
 
-*Result---none if valid, errors returned if invalid inoputs*
+*Result---none if valid, errors returned if invalid inputs*
 
 *Example*
 
@@ -2290,7 +2180,7 @@ The `clearburnlist` RPC clears the mempool whitelist of all addresses.
 
 *Parameters: none*
 
-*Result: nome*
+*Result: none*
 
 *Example*
 
