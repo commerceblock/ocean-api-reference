@@ -70,6 +70,7 @@ The following RPCs are unique to the Ocean client
 ### Policy
 - [addtowhitelist][]
 - [readwhitelist][]
+- [readwhitelistdb][]
 - [querywhitelist][]
 - [removefromwhitelist][]
 - [clearwhitelist][]
@@ -86,6 +87,14 @@ The following RPCs are unique to the Ocean client
 ### Configuration options
 
 - [pkhwhitelist][]
+- [pkhwhitelistmongodb][]
+- [wldbuser][]
+- [wldbpass][]
+- [wldbport][]
+- [wldbhost][]
+- [wldbdatabase][]
+- [wldbauthsource][]
+- [wldbauthmechanism][] 
 - [freezelist][]
 - [burnlist][]
 - [issuanceblock][]
@@ -1825,6 +1834,20 @@ contract hash as present in the most recent block header. The file format is as 
 ocean-cli readwhitelist derivedkeys.txt
 ```
 
+## readwhitelistdb
+
+The `readwhitelistdb` RPC adds a list of valid contract tweaked addresses from a mongodb database to the node
+mempool whitelist. It requires the database environment variables or configuration options, and a correctly formatted 
+database as specified in [pkhwhitelistmongodb][].
+
+*Result---none if valid, errors returned if invalid inoputs*
+
+*Example*
+
+```bash
+ocean-cli readwhitelistdb
+```
+
 ## removefromwhitelist
 
 The `removefromwhitelist` RPC removes a specified address from the node mempool whitelist.
@@ -2192,6 +2215,62 @@ The `clearburnlist` RPC clears the mempool whitelist of all addresses.
 ocean-cli clearburnlist
 ```
 
+## Configuration options
+
+The following configuration options are specific to Ocean. 
+
+## pkhwhitelistmongodb
+
+Read whitelist addresses from a mongodb database (default: false).
+
+This option enables reading from a mongodb whitelist database. The addresses are to be stored in a collection called `whitelist`. 
+Each document in the collection should have the following fields (additional fields are permitted):
+
+{
+_id: `id-0000001`, 
+addresses: `[address1, address2, ..., addressN]`,
+keys: `[key1, key2, ..., keyN]`
+}
+
+Here, `_id` is a unique identifier, `keys` is an array containing the public keys to be whitelisted and `addresses` is an array
+containing the corresponding contract tweaked addresses. `_id` is a mandatory field; the others are optional.
+
+If the `pkhwhitelistmongodb` option is enabled, on startup all valid addresses will be read into the local address whitelist memory 
+in the same manner as the [readwhitelistdb][] RPC call. The database will also be monitored for changes; addresses will be automatically 
+read in from any new documents inserted into the collection. If any documents are modified or deleted, the local whitelist 
+will be resynchronised with the database. Resynchronisation is a longer process than insertion because all addresses will be reimported.
+
+The following configuration options are required: [wldbuser][], [wldbpass][], [wldbport][], [wldbhost][], [wldbdatabase][],
+[wldbauthsource][], [wldbauthmechanism][].
+
+## wldbuser
+
+Whitelist database username. Default: $WLDBUSER
+
+## wldbpass
+
+Whitelist database password. Default: $WLDBPASS
+
+## wldbport
+
+Whitelist database password. Default: $WLDBPORT
+
+## wldbhost
+
+Whitelist database password. Default: `wldbhost` (defined in /etc/hosts).
+
+## wldbdatabase
+
+Whitelist database name. Default: $WLDBDATABASE
+
+## wldbauthsource
+
+Whitelist database authsource. Default: $WLDBAUTHSOURCE
+
+## wldbauthmechanism
+
+Whitelist database authmechanism. Default: `SCRAM-SHA-256`
+
 [dumpderivedkeys]: #dumpderivedkeys
 [validatederivedkeys]: #validatederivedkeys
 [dumpkycfile]: #dumpkycfile
@@ -2212,6 +2291,7 @@ ocean-cli clearburnlist
 [getrequestbids]: #getrequestbids
 [addtowhitelist]: #addtowhitelist
 [readwhitelist]: #readwhitelist
+[readwhitelistdb]: #readwhitelistdb
 [querywhitelist]: #querywhitelist
 [removefromwhitelist]: #removefromwhitelist
 [clearwhitelist]: #clearwhitelist
@@ -2225,6 +2305,14 @@ ocean-cli clearburnlist
 [removefromburnlist]: #removefromburnlist
 [clearburnlist]: #clearburnlist
 [pkhwhitelist]: #pkhwhitelist
+[pkhwhitelistmongodb]: #pkhwhitelistmongodb
+[wldbuser]: #wldbuser
+[wldbpass]: #wldbpass
+[wldbport]: #wldbport
+[wldbhost]: #wldbhost
+[wldbdatabase]: #wldbdatabase
+[wldbauthsource]: #wldbauthsource
+[wldbauthmechanism]: #wldbauthmechanism
 [freezelist]: #freezelist
 [burnlist]: #burnlist
 [issuanceblock]: #issuanceblock
