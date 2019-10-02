@@ -1,3 +1,7 @@
+### ***********************************************************************
+### This document is no longer maintained. Find ocean API reference [here](https://commerceblock.readthedocs.io/en/latest/ocean-api/index.html). 
+### ***********************************************************************
+
 # Ocean API reference
 
 
